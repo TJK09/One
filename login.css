@@ -1,0 +1,39 @@
+.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 8%;
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+
+}
+
+.logo{
+  font-size: 25px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0;
+  animation: slideRight 1s ease forwards ;
+}
+
+.navbar a {
+  display: inline-block;
+  font-size: 16px;
+  color: #797979;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 20px;
+  opacity: 0;
+  animation: slidetop 1s ease forwards ;
+  animation-delay: calc(.2s * var(--i));
+}
+
+.navbar a:hover,
+.navbar a.active {
+  color: blue;
+}

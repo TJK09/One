@@ -9,6 +9,8 @@
 
 body {
     background: #000000;
+    display: flex;
+    flex-direction: column;
     color: #222;
 }
 
@@ -293,4 +295,18 @@ body {
         right: -25%;
         opacity:1;
     }
+}
+
+.Blogs{
+    position: static;
+}
+
+.SuperCars{
+    position: relative;
+}
+
+.SuperCars img{
+    position: absolute;
+    right: 0px;
+    z-index: -1;
 }

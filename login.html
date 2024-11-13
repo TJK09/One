@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Signup Form with CRUD</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body class="bg-dark">
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg" style="width: 24rem;">
+      <div class="card-body">
+        <h1 class="text-center mb-4">AutoDeal</h1>
+       
+        <ul class="nav nav-tabs nav-justified mb-3" id="form-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="sign-in-tab" data-bs-toggle="tab" data-bs-target="#sign-in" type="button" role="tab" aria-controls="sign-in" aria-selected="true">Sign In</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="sign-up-tab" data-bs-toggle="tab" data-bs-target="#sign-up" type="button" role="tab" aria-controls="sign-up" aria-selected="false">Sign Up</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="read-all-tab" data-bs-toggle="tab" data-bs-target="#read-all" type="button" role="tab" aria-controls="read-all" aria-selected="false">Read All Data</button>
+          </li>
+        </ul>
+
+        
+        <div class="tab-content" id="form-tabs-content">
+         
+          <div class="tab-pane fade show active" id="sign-in" role="tabpanel" aria-labelledby="sign-in-tab">
+            <form id="signInForm">
+              <div class="mb-3">
+                <label for="signin-email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="signin-email" placeholder="Enter email" required>
+              </div>
+              <div class="mb-3">
+                <label for="signin-password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="signin-password" placeholder="Enter password" required>
+              </div>
+              <div class="d-flex justify-content-between">
+                <a href="#" class="text-decoration-none">Forgot password?</a>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="tab-pane fade" id="sign-up" role="tabpanel" aria-labelledby="sign-up-tab">
+            <form id="signUpForm">
+              <div class="mb-3">
+                <label for="signup-username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="signup-username" placeholder="Enter username" required>
+              </div>
+              <div class="mb-3">
+                <label for="signup-email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="signup-email" placeholder="Enter email" required>
+              </div>
+              <div class="mb-3">
+                <label for="signup-password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="signup-password" placeholder="Enter password" required>
+              </div>
+              <div class="mb-3">
+                <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="signup-confirm-password" placeholder="Confirm password" required>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Sign Up</button>
+            </form>
+          </div>
+
+          <div class="tab-pane fade" id="read-all" role="tabpanel" aria-labelledby="read-all-tab">
+            <div class="mt-3" id="user-data">
+              <ul class="list-group" id="userList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signUpForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("signup-username").value;
+      const email = document.getElementById("signup-email").value;
+      const password = document.getElementById("signup-password").value;
+      const confirmPassword = document.getElementById("signup-confirm-password").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const userExists = users.find(user => user.email === email);
+
+      if (userExists) {
+        alert("Email already exists. Please use a different email.");
+        return;
+      }
+
+      users.push({ username, email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("Sign Up successful! You can now Sign In.");
+      document.getElementById("signUpForm").reset();
+    });
+
+    document.getElementById("signInForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("signin-email").value;
+      const password = document.getElementById("signin-password").value;
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(user => user.email === email && user.password === password);
+
+      if (user) {
+        alert(`Welcome, ${user.username}!`);
+      } else {
+        alert("Invalid email or password. Please try again.");
+      }
+
+      document.getElementById("signInForm").reset();
+    });
+
+    document.getElementById("read-all-tab").addEventListener("click", function() {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const userList = document.getElementById("userList");
+      userList.innerHTML = ""; 
+
+      if (users.length > 0) {
+        users.forEach(user => {
+          const listItem = document.createElement("li");
+          listItem.classList.add("list-group-item");
+          listItem.innerHTML = `<strong>Username:</strong> ${user.username}<br><strong>Email:</strong> ${user.email}`;
+          userList.appendChild(listItem);
+        });
+      } else {
+        userList.innerHTML = "<p class='text-center'>No users found.</p>";
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
